@@ -27,10 +27,10 @@ def pdf_loader_and_splitter():
     # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
     # pages = loader.load()
     loaders = [
-        PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf"),
-        PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\2.pdf"),
-        PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\3.pdf"),
-        PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\4.pdf")
+        PyPDFLoader("./1.pdf"),
+        PyPDFLoader("./2.pdf"),
+        PyPDFLoader("./3.pdf"),
+        PyPDFLoader("./4.pdf")
     ]
 
     docs = []
@@ -50,7 +50,7 @@ def pdf_loader_and_splitter():
     embedding = OllamaEmbeddings(
         base_url="http://localhost:11434", 
         model="mxbai-embed-large",
-        temperature=0
+        #temperature=0
     )
 
     #vetorizando
@@ -60,6 +60,12 @@ def pdf_loader_and_splitter():
         #persist_directory=persist_directory
     )
 
+    # salvar banco vetor no diretorio
+    # vectordb.save_local(folder_path="./BancoVetor/")
+    # print("Banco de Vetores pronto")
+
+
+    #-------------------------------------------------------------
 
     #comprimindo texto e pegando o mais relevante
     compressor = LLMChainExtractor.from_llm(chat)
