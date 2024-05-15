@@ -30,7 +30,7 @@ def pdf_loader_and_splitter():
         r_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
             chunk_overlap=250,
-            separators=["\n\n", "\n", ". ", " ", ""]
+            separators=["\n\n", "\n", "?<=\. ", " ", ""]
         )
 
         splits = r_splitter.split_documents(docs)
