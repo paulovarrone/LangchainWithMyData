@@ -9,8 +9,9 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains import LLMChain
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
+import os
 
-def pdf_loader_and_splitter():  
+def pdf_loader_and_splitter(BancoVetor):  
     try:
         # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
         # pages = loader.load()
@@ -47,12 +48,26 @@ def pdf_loader_and_splitter():
             embedding=embedding,
             #persist_directory=persist_directory
         )
-
-        # salvar banco vetor no diretorio
-        # vectordb.save_local(folder_path="./BancoVetor/")
-        # print("Banco de Vetores pronto")
     except Exception as e:
        print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {vectordb}: {e}")
+
+    # salvar banco vetor no diretorio
+    try:
+      if not BancoVetor:
+        os.makedirs(BancoVetor)
+        print("Pasta criada com sucesso.")
+      else:
+        print("Pasta já existe.")
+    except Exception as e:
+        print(f"ERRO AO CRIAR DIRETÓRIO {BancoVetor}: {e}")
+
+    try:
+        vectordb.save_local(folder_path="./BancoVetor/")
+        print("Banco de Vetores pronto")
+    except Exception as e:
+        print(f"ERRO AO SALVAR VETORES NO BANCO {vectordb.save_local}: {e}")
+
+    
 
     #-------------------------------------------------------------
 
