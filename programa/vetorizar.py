@@ -48,51 +48,52 @@ def pdf_loader_and_splitter(BancoVetor):
             embedding=embedding,
             #persist_directory=persist_directory
         )
-    except Exception as e:
-       print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {vectordb}: {e}")
+    
 
     # salvar banco vetor no diretorio
-    try:
-      if not BancoVetor:
-        os.makedirs(BancoVetor)
-        print("Pasta criada com sucesso.")
-      else:
-        print("Pasta já existe.")
-    except Exception as e:
-        print(f"ERRO AO CRIAR DIRETÓRIO {BancoVetor}: {e}")
+        try:
+            if not BancoVetor:
+                os.makedirs(BancoVetor)
+                print("Pasta criada com sucesso.")
+            else:
+                print("Pasta já existe.")
+        except Exception as e:
+            print(f"ERRO AO CRIAR DIRETÓRIO {e}")
 
-    try:
-        vectordb.save_local(folder_path="./BancoVetor/")
-        print("Banco de Vetores pronto")
-    except Exception as e:
-        print(f"ERRO AO SALVAR VETORES NO BANCO {vectordb.save_local}: {e}")
+        try:
+            vectordb.save_local(folder_path=BancoVetor)
+            print("Banco de Vetores pronto")
+        except Exception as e:
+            print(f"ERRO AO SALVAR VETOR {e}")
 
+    except Exception as e:
+       print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {e}")
     
 
     #-------------------------------------------------------------
 
-    #comprimindo texto e pegando o mais relevante
-    compressor = LLMChainExtractor.from_llm(chat)
+    # #comprimindo texto e pegando o mais relevante
+    # compressor = LLMChainExtractor.from_llm(chat)
 
-    #VAMOS USAR MMR???
-    compression_retriever = ContextualCompressionRetriever(
-        base_compressor = compressor,
-        base_retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
-    )
+    # #VAMOS USAR MMR???
+    # compression_retriever = ContextualCompressionRetriever(
+    #     base_compressor = compressor,
+    #     base_retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
+    # )
 
-    compressed_docs = compression_retriever.get_relevant_documents(PERGUNTA)
+    # compressed_docs = compression_retriever.get_relevant_documents(PERGUNTA)
     
-    #lamma3 IA
-    chat = ConversationalRetrievalChain.from_llm(
-        llm=ChatOllama(base_url='http://localhost:11434',
-        model="llama3:8b", 
-        temperature=0, 
-        system='You only speak/write in brazilian portuguese', template= None),
-        #chain_type=chain_type, 
-        retriever=compressed_docs, 
-        return_source_documents=True,
-        return_generated_question=True,
-    )
+    # #lamma3 IA
+    # chat = ConversationalRetrievalChain.from_llm(
+    #     llm=ChatOllama(base_url='http://localhost:11434',
+    #     model="llama3:8b", 
+    #     temperature=0, 
+    #     system='You only speak/write in brazilian portuguese', template= None),
+    #     #chain_type=chain_type, 
+    #     retriever=compressed_docs, 
+    #     return_source_documents=True,
+    #     return_generated_question=True,
+    # )
     
 
-    return chat, vectordb
+    # return chat, vectordb
