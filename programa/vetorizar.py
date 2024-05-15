@@ -1,4 +1,3 @@
-import __main__
 from langchain.chains import LLMChain
 from langchain.embeddings.ollama import OllamaEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
