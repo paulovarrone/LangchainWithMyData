@@ -1,3 +1,4 @@
+import __main__
 import os
 import datetime
 from langchain.chains import LLMChain
@@ -22,48 +23,51 @@ from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain.prompts import PromptTemplate
 #EXTRA
 from langchain_community.llms.ollama import Ollama
+import fitz
 
 def pdf_loader_and_splitter():  
-    # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
-    # pages = loader.load()
-    loaders = [
-        PyPDFLoader("./1.pdf"),
-        PyPDFLoader("./2.pdf"),
-        PyPDFLoader("./3.pdf"),
-        PyPDFLoader("./4.pdf")
-    ]
+    try:
+        # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
+        # pages = loader.load()
+        loaders = [
+            PyPDFLoader("./1.pdf"),
+            PyPDFLoader("./2.pdf"),
+            PyPDFLoader("./3.pdf"),
+            PyPDFLoader("./4.pdf")
+        ]
 
-    docs = []
-    for loader in loaders:
-        docs.extend(loader.load())
+        docs = []
+        for loader in loaders:
+            docs.extend(loader.load())
 
-    #splitando texto
-    r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=250,
-        separators=["\n\n", "\n", ". ", " ", ""]
-    )
+        #splitando texto
+        r_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=250,
+            separators=["\n\n", "\n", ". ", " ", ""]
+        )
 
-    splits = r_splitter.split_documents(docs)
-    
-    #string para numeros
-    embedding = OllamaEmbeddings(
-        base_url="http://localhost:11434", 
-        model="mxbai-embed-large",
-        #temperature=0
-    )
+        splits = r_splitter.split_documents(docs)
+        
+        #string para numeros
+        embedding = OllamaEmbeddings(
+            base_url="http://localhost:11434", 
+            model="mxbai-embed-large",
+            #temperature=0
+        )
 
-    #vetorizando
-    vectordb = FAISS.from_documents(
-        documents=splits,
-        embedding=embedding,
-        #persist_directory=persist_directory
-    )
+        #vetorizando
+        vectordb = FAISS.from_documents(
+            documents=splits,
+            embedding=embedding,
+            #persist_directory=persist_directory
+        )
 
-    # salvar banco vetor no diretorio
-    # vectordb.save_local(folder_path="./BancoVetor/")
-    # print("Banco de Vetores pronto")
-
+        # salvar banco vetor no diretorio
+        # vectordb.save_local(folder_path="./BancoVetor/")
+        # print("Banco de Vetores pronto")
+    except Exception as e:
+       print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {vectordb}: {e}")
 
     #-------------------------------------------------------------
 
@@ -76,7 +80,7 @@ def pdf_loader_and_splitter():
         base_retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
     )
 
-    compressed_docs = compression_retriever.get_relevant_documents("PERGUNTA")
+    compressed_docs = compression_retriever.get_relevant_documents(PERGUNTA)
     
     #lamma3 IA
     chat = ConversationalRetrievalChain.from_llm(
@@ -110,3 +114,46 @@ def template(vectordb, chat):
     )
 
     return qa_chain
+
+
+
+def extract_text_from_pdf(caminho_pdf):
+  try:
+
+    text = ""
+
+    with fitz.open(caminho_pdf) as pdf_file:
+      for page in pdf_file: 
+        text += page.get_text()
+
+    return text
+  
+  except Exception as e:
+    print(f"ERRO AO TENTAR EXTRAIR TEXTO da função: extract_text_from_pdf {text}: {e}")
+
+
+def texto(caminho_pdf):
+   
+   conteudo_pasta = os.listdir(caminho_pdf)
+   
+   try:
+    for arquivo in conteudo_pasta:
+        if arquivo.endswith('.pdf'):
+            pdf_file = os.path.join(caminho_pdf, arquivo)
+            texto_pdf = extract_text_from_pdf(pdf_file)
+
+    return texto_pdf
+   
+   except Exception as e:
+      print(f"ERRO AO TENTAR EXTRAIR TEXTO da função: texto {texto_pdf}: {e}")
+
+
+def main():
+   try:
+       caminho_pdf = './pdf'
+
+   except Exception as e:
+       print(f"Erro na função: main  {caminho_pdf}: {e}")
+
+if __name__ is "__main__":
+   main()
