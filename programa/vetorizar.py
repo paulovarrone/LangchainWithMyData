@@ -28,6 +28,7 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
         docs = []
         for loader in loaders:
             docs.extend(loader.load())
+        print('Arquivos CARREGADOS com sucesso!')
 
         #splitando texto
         r_splitter = RecursiveCharacterTextSplitter(
@@ -35,9 +36,11 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
             chunk_overlap=250,
             separators=["\n\n", "\n", "(?<=\. )", " ", ""]
         )
-
-        splits = r_splitter.split_documents(docs)
         
+        splits = r_splitter.split_documents(docs)
+        print('Arquivos SPLITADOS com sucesso!')
+
+
         #string para numeros
         embedding = OllamaEmbeddings(
             base_url="http://localhost:11434", 
@@ -50,7 +53,8 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
             embedding=embedding,
             #persist_directory=persist_directory
         )
-    
+        print('Arquivos EMBEDDINGS com sucesso!')
+        print('Arquivos VETORIZADO com sucesso!')
 
     # salvar banco vetor no diretorio
         try:
@@ -63,7 +67,7 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
             print(f"ERRO AO CRIAR DIRETÓRIO {e}")
 
         try:
-            vectordb.save_local(folder_path=BancoVetor)
+            vectordb.save_local(folder_path=r'C:\Users\3470622\Desktop\ChatPdfLocal\programa\BancoVetor')
             print("Banco de Vetores pronto")
         except Exception as e:
             print(f"ERRO AO SALVAR VETOR {e}")

@@ -8,7 +8,7 @@ def texto(caminho_pdf,conteudo_pasta):
         if arquivo.endswith('.pdf'):
             pdf_file = os.path.join(caminho_pdf, arquivo)
             texto_pdf = extract_text_from_pdf(pdf_file)
-
+        print('Texto extraido com sucesso na function texto()')
     return texto_pdf
    
    except Exception as e:
