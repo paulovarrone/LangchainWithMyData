@@ -9,7 +9,7 @@ def main():
        conteudo_pasta = os.listdir(caminho_pdf)
        BancoVetor = os.path.exists(caminho_banco)
 
-       pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor)
+       pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
        
 
    except Exception as e:

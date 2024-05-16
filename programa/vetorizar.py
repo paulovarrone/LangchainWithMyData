@@ -14,7 +14,7 @@ from texto_pdf_prompt import texto
 
 
 
-def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor):  
+def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco):  
     try:
         # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
         # pages = loader.load()
@@ -55,7 +55,7 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor):
     # salvar banco vetor no diretorio
         try:
             if not BancoVetor:
-                os.makedirs(BancoVetor)
+                os.makedirs(caminho_banco)
                 print("Pasta criada com sucesso.")
             else:
                 print("Pasta já existe.")
@@ -72,7 +72,7 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor):
        print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {e}")
     
     texto_da_inicial = texto(caminho_pdf,conteudo_pasta)
-    
+
     #-------------------------------------------------------------
 
     # #comprimindo texto e pegando o mais relevante
