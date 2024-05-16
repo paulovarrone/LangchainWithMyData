@@ -1,7 +1,7 @@
 import os
 from extrair_texto import extract_text_from_pdf
 
-def texto(caminho_pdf, conteudo_pasta):
+def texto(caminho_pdf,conteudo_pasta):
    
    try:
     for arquivo in conteudo_pasta:

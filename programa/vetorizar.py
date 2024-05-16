@@ -10,8 +10,11 @@ from langchain.chains import LLMChain
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
 import os
+from texto_pdf_prompt import texto
 
-def pdf_loader_and_splitter(BancoVetor):  
+
+
+def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor):  
     try:
         # loader = PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\1.pdf")
         # pages = loader.load()
@@ -21,7 +24,7 @@ def pdf_loader_and_splitter(BancoVetor):
             PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\base_de_dados\3.pdf"),
             PyPDFLoader(r"C:\Users\3470622\Desktop\ChatPdfLocal\base_de_dados\4.pdf")
         ]
-
+        
         docs = []
         for loader in loaders:
             docs.extend(loader.load())
@@ -39,7 +42,6 @@ def pdf_loader_and_splitter(BancoVetor):
         embedding = OllamaEmbeddings(
             base_url="http://localhost:11434", 
             model="mxbai-embed-large",
-            #temperature=0
         )
 
         #vetorizando
@@ -69,7 +71,7 @@ def pdf_loader_and_splitter(BancoVetor):
     except Exception as e:
        print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {e}")
     
-
+    texto(caminho_pdf,conteudo_pasta)
     #-------------------------------------------------------------
 
     # #comprimindo texto e pegando o mais relevante
