@@ -71,7 +71,8 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor):
     except Exception as e:
        print(f"ERRO AO TENTAR VETORIZAR da função: pdf_loader_and_splitter {e}")
     
-    texto(caminho_pdf,conteudo_pasta)
+    texto_da_inicial = texto(caminho_pdf,conteudo_pasta)
+    
     #-------------------------------------------------------------
 
     # #comprimindo texto e pegando o mais relevante
