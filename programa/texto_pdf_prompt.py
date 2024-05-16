@@ -1,9 +1,7 @@
 import os
 from extrair_texto import extract_text_from_pdf
 
-def texto(caminho_pdf):
-   
-   conteudo_pasta = os.listdir(caminho_pdf)
+def texto(caminho_pdf, conteudo_pasta):
    
    try:
     for arquivo in conteudo_pasta:
@@ -14,4 +12,4 @@ def texto(caminho_pdf):
     return texto_pdf
    
    except Exception as e:
-      print(f"ERRO AO TENTAR EXTRAIR TEXTO da função: texto {texto_pdf}: {e}")
+      print(f"ERRO AO TENTAR EXTRAIR TEXTO da função: texto {e}")
