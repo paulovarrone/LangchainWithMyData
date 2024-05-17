@@ -83,26 +83,26 @@ def pdf_loader_and_splitter(caminho_pdf,conteudo_pasta,BancoVetor,caminho_banco)
     
 
      # #lamma3 IA
-    chat = ConversationalRetrievalChain.from_llm(
-        llm=ChatOllama(base_url='http://localhost:11434',
-        model="llama3:8b", 
-        temperature=0, 
-        system='You only speak/write in brazilian portuguese', template= None),
-        #chain_type=chain_type, 
-        retriever=compressed_docs, 
-        return_source_documents=True,
-        return_generated_question=True,
-    )
+    # chat = ConversationalRetrievalChain.from_llm(
+    #     llm=ChatOllama(base_url='http://localhost:11434',
+    #     model="llama3:8b", 
+    #     temperature=0, 
+    #     system='You only speak/write in brazilian portuguese', template= None),
+    #     #chain_type=chain_type, 
+    #     retriever=compressed_docs, 
+    #     return_source_documents=True,
+    #     return_generated_question=True,
+    # )
 
-    compressor = LLMChainExtractor.from_llm(chat)
+    # compressor = LLMChainExtractor.from_llm(chat)
 
-    #VAMOS USAR MMR???
-    compression_retriever = ContextualCompressionRetriever(
-        base_compressor = compressor,
-        base_retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
-    )
+    # #VAMOS USAR MMR???
+    # compression_retriever = ContextualCompressionRetriever(
+    #     base_compressor = compressor,
+    #     base_retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
+    # )
 
-    compressed_docs = compression_retriever.get_relevant_documents("email")
+    # compressed_docs = compression_retriever.get_relevant_documents("email")
     
    
     
